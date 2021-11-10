@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo.svg'
-import {Container , Search , Logo, Wrapper , Map , CarouselTittle , Carousel} from './styles'
+import {Container , Search , Logo, Wrapper ,  CarouselTittle , Carousel} from './styles'
 import TextField, {Input} from '@material/react-text-field';
 import MaterialIcon from '@material/react-material-icon/';
 import restaurante from '../../assets/restaurante-fake.png';
-import { Card , RestauranteCard , Modal } from '../../components';
+import { Card , RestauranteCard , Modal , Map} from '../../components';
 
 const Home = () => {
 
     const [inputValue,setInputValue] = useState('');
-
+    const [query, setQuery] = useState(null);
     const [ modalOpened , setModalOpened ] = useState(false);
 
     const settings = {
@@ -21,6 +21,12 @@ const Home = () => {
         adaptiveHeight: true,
     }
 
+    function handleKeyPress(e){
+        if(e.key === 'Enter'){
+            setQuery(inputValue);
+        }
+    }
+
     return(
         <Wrapper>
             <Container>
@@ -30,7 +36,7 @@ const Home = () => {
                         // onTrailingIconSelector={() => this.setState({value: ''})} 
                         trailingIcon={<MaterialIcon role="button" icon="search"/>}
                     >
-                        <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+                        <Input value={inputValue}  onKeyPress={handleKeyPress} onChange={(e) => setInputValue(e.target.value)}/>
                     </TextField> 
                     <CarouselTittle> Na sua Área </CarouselTittle>
                     <Carousel {...settings}>
@@ -43,7 +49,7 @@ const Home = () => {
                     
                 </RestauranteCard>
             </Container>
-            <Map> </Map>
+            <Map query={query}> </Map>
             <Modal open={modalOpened} onClose={() => setModalOpened(!modalOpened)}></Modal>
         </Wrapper>
 
